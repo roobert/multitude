@@ -1,3 +1,3 @@
 # Multitude
-The application deployment pipeline dashboard.
+Application deployment pipeline dashboard.
 
