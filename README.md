@@ -1,1 +1,3 @@
-# Multitude - Application Deployment Pipeline Dashboard
+# Multitude
+The Application Deployment Pipeline Dashboard
+
