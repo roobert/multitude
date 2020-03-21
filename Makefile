@@ -6,4 +6,4 @@ dev-server:
 		FLASK_DEBUG=true FLASK_APP=./api.py flask run
 
 server:
-	@FLASK_APP=./api.py flask run
+	@FLASK_APP=./multitude/api.py flask run
