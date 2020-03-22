@@ -2,12 +2,12 @@
 
 from flask import Flask, request
 from firestore.client import MultitudeClient
-from secret import generate_secret
+from secret import get_secret
 
 
 app = Flask(__name__)
 
-secret = generate_secret()
+secret = get_secret()
 app.secret_key = secret
 app.logger.debug(f"==> token: {secret}")
 

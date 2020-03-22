@@ -3,5 +3,5 @@
 from os import environ, urandom
 
 
-def generate_secret():
+def get_secret():
     return environ["MULTITUDE_TOKEN"] if environ["MULTITUDE_TOKEN"] else urandom(16)
