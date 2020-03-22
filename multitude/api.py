@@ -33,12 +33,16 @@ def upsert(collection: str, owner: str, repo: str, tag: str, status: str = None)
     return doc.upsert()
 
 
-@app.get("/fetch/{collection}/{owner}/{repo}/{tag}")
-def fetch_collection_owner_repo_tag(collection, owner=None, repo=None, tag=None):
-    doc = MultitudeDoc(
-        db=multitude_client.db, collection=collection, owner=owner, repo=repo, tag=tag
-    )
-    return doc.fetch_collection_owner_repo_tag()
+@app.get("/fetch/{collection}")
+def fetch_collection(collection):
+    doc = MultitudeDoc(db=multitude_client.db, collection=collection)
+    return doc.fetch_collection()
+
+
+@app.get("/fetch/{collection}/{owner}")
+def fetch_collection_owner(collection, owner=None):
+    doc = MultitudeDoc(db=multitude_client.db, collection=collection, owner=owner)
+    return doc.fetch_collection_owner()
 
 
 @app.get("/fetch/{collection}/{owner}/{repo}")
@@ -49,13 +53,9 @@ def fetch_collection_owner_repo(collection, owner=None, repo=None):
     return doc.fetch_collection_owner_repo()
 
 
-@app.get("/fetch/{collection}/{owner}")
-def fetch_collection_owner(collection, owner=None):
-    doc = MultitudeDoc(db=multitude_client.db, collection=collection, owner=owner)
-    return doc.fetch_collection_owner()
-
-
-@app.get("/fetch/{collection}")
-def fetch_collection(collection):
-    doc = MultitudeDoc(db=multitude_client.db, collection=collection)
-    return doc.fetch_collection()
+@app.get("/fetch/{collection}/{owner}/{repo}/{tag}")
+def fetch_collection_owner_repo_tag(collection, owner=None, repo=None, tag=None):
+    doc = MultitudeDoc(
+        db=multitude_client.db, collection=collection, owner=owner, repo=repo, tag=tag
+    )
+    return doc.fetch_collection_owner_repo_tag()

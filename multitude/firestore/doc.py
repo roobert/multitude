@@ -13,37 +13,6 @@ class MultitudeDoc:
     status: str = ""
     tag: str = ""
 
-    @staticmethod
-    def to_json(docs):
-        return [doc.to_dict() for doc in docs]
-
-    def fetch_collection_owner_repo_tag(self):
-        docs = (
-            self.db.collection(self.collection)
-            .where("owner", "==", self.owner)
-            .where("repo", "==", self.repo)
-            .where("properties.tag", "==", self.tag)
-        ).stream()
-        return self.to_json(docs)
-
-    def fetch_collection_owner_repo(self):
-        docs = (
-            self.db.collection(self.collection)
-            .where("owner", "==", self.owner)
-            .where("repo", "==", self.repo)
-        ).stream()
-        return self.to_json(docs)
-
-    def fetch_collection_owner(self):
-        docs = (
-            self.db.collection(self.collection).where("owner", "==", self.owner)
-        ).stream()
-        return self.to_json(docs)
-
-    def fetch_collection(self):
-        docs = (self.db.collection(self.collection)).stream()
-        return self.to_json(docs)
-
     # FIXME
     # * there is probably a better way to do this..
     def upsert(self):
@@ -83,3 +52,34 @@ class MultitudeDoc:
             changed.append(doc_update)
 
         return changed
+
+    def fetch_collection(self):
+        docs = (self.db.collection(self.collection)).stream()
+        return self.to_json(docs)
+
+    def fetch_collection_owner(self):
+        docs = (
+            self.db.collection(self.collection).where("owner", "==", self.owner)
+        ).stream()
+        return self.to_json(docs)
+
+    def fetch_collection_owner_repo(self):
+        docs = (
+            self.db.collection(self.collection)
+            .where("owner", "==", self.owner)
+            .where("repo", "==", self.repo)
+        ).stream()
+        return self.to_json(docs)
+
+    def fetch_collection_owner_repo_tag(self):
+        docs = (
+            self.db.collection(self.collection)
+            .where("owner", "==", self.owner)
+            .where("repo", "==", self.repo)
+            .where("properties.tag", "==", self.tag)
+        ).stream()
+        return self.to_json(docs)
+
+    @staticmethod
+    def to_json(docs):
+        return [doc.to_dict() for doc in docs]
