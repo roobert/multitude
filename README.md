@@ -2,9 +2,9 @@
 Application deployment pipeline dashboard.
 
 ## About
-Multitude is an dashboard which displays webhook data posted from a variety of different sources.
+Multitude is an dashboard to display data posted from a multitude of different sources.
 
-Multitude is written in Python/FastAPI, and is backed by GCP Firestore.
+This software is written in Python/FastAPI, and is backed by GCP Firestore.
 
 ## Interfaces
 ### CLI
