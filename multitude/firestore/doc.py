@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from firebase_admin import firestore
 
 # from .client import MultitudeClient
@@ -19,16 +19,10 @@ class MultitudeDoc:
         docs = self.db.collection(self.collection).stream()
         return docs
 
-    def dump(self):
-        docs = self.db.collection(self.collection).stream()
-        for doc in docs:
-            print(f"{doc.id} => {doc.to_dict()}")
-
     # FIXME
     # * there is probably a better way to do this..
     def upsert(self):
-        updated = False
-        print(type(self.db))
+        changed = []
 
         docs = (
             self.db.collection(self.collection)
@@ -36,6 +30,13 @@ class MultitudeDoc:
             .where("repo", "==", self.repo)
             .where("properties.tag", "==", self.tag)
         )
+
+        time_data = {"timestamp": firestore.SERVER_TIMESTAMP}
+        doc_update = {
+            "owner": self.owner,
+            "repo": self.repo,
+            "properties": {"status": self.status, "tag": self.tag},
+        }
 
         for data in docs.stream():
             doc = data.to_dict()
@@ -48,26 +49,12 @@ class MultitudeDoc:
                 continue
 
             doc = self.db.collection(self.collection).document(data.id)
+            doc.update({**doc_update, **time_data})
+            changed.append(doc_update)
 
-            doc.update(
-                {
-                    "timestamp": firestore.SERVER_TIMESTAMP,
-                    "owner": self.owner,
-                    "repo": self.repo,
-                    "properties": {"status": self.status, "tag": self.tag},
-                }
-            )
-            updated = True
-
-        if not updated:
+        if not changed:
             doc = self.db.collection(self.collection).document()
-            doc.set(
-                {
-                    "timestamp": firestore.SERVER_TIMESTAMP,
-                    "owner": self.owner,
-                    "repo": self.repo,
-                    "properties": {"status": self.status, "tag": self.tag},
-                }
-            )
+            doc.set({**doc_update, **time_data})
+            changed.append(doc_update)
 
-        return asdict(self)
+        return changed
