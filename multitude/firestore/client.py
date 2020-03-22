@@ -7,17 +7,17 @@
 import sys
 import argparse
 import firebase_admin
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from firebase_admin import firestore
 
 
 @dataclass
 class MultitudeClient:
     collection: str
-    owner: str
-    repo: str
-    status: str
-    tag: str
+    owner: str = field(init=False)
+    repo: str = field(init=False)
+    status: str = field(init=False)
+    tag: str = field(init=False)
 
     def __post_init__(self):
         self.db_configure()
@@ -25,6 +25,10 @@ class MultitudeClient:
     def db_configure(self):
         firebase_admin.initialize_app()
         self.db = firestore.client()
+
+    def fetch(self):
+        docs = self.db.collection(self.collection).stream()
+        return docs
 
     def dump(self):
         docs = self.db.collection(self.collection).stream()
