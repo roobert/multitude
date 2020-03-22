@@ -2,6 +2,7 @@
 
 from flask import Flask, request
 from firestore.client import MultitudeClient
+from firestore.doc import MultitudeDoc
 from secret import get_secret
 
 
@@ -10,6 +11,8 @@ app = Flask(__name__)
 secret = get_secret()
 app.secret_key = secret
 app.logger.debug(f"==> token: {secret}")
+
+multitude_client = MultitudeClient()
 
 
 @app.route(
@@ -22,11 +25,15 @@ def upsert(collection, owner, repo, tag):
     if not status:
         return "status parameter not specified", 400
 
-    client = MultitudeClient(
-        collection=collection, owner=owner, repo=repo, tag=tag, status=status,
+    client = MultitudeDoc(
+        db=multitude_client.db,
+        collection=collection,
+        owner=owner,
+        repo=repo,
+        tag=tag,
+        status=status,
     )
-    client.update()
-    return
+    return client.upsert()
 
 
 @app.route(
@@ -34,7 +41,9 @@ def upsert(collection, owner, repo, tag):
     methods=["GET"],
 )
 def fetch_collection_owner_repo_tag(collection, owner=None, repo=None, tag=None):
-    client = MultitudeClient(collection=collection, owner=owner, repo=repo, tag=tag)
+    client = MultitudeDoc(
+        db=multitude_client.db, collection=collection, owner=owner, repo=repo, tag=tag
+    )
     client.fetch()
     return
 
@@ -43,7 +52,9 @@ def fetch_collection_owner_repo_tag(collection, owner=None, repo=None, tag=None)
     "/fetch/<string:collection>/<string:owner>/<string:repo>", methods=["GET"],
 )
 def fetch_collection_owner_repo(collection, owner=None, repo=None):
-    client = MultitudeClient(collection=collection, owner=owner, repo=repo)
+    client = MultitudeDoc(
+        db=multitude_client.db, collection=collection, owner=owner, repo=repo
+    )
     client.fetch()
     return
 
@@ -52,7 +63,7 @@ def fetch_collection_owner_repo(collection, owner=None, repo=None):
     "/fetch/<string:collection>/<string:owner>", methods=["GET"],
 )
 def fetch_collection_owner(collection, owner=None):
-    client = MultitudeClient(collection=collection, owner=owner)
+    client = MultitudeDoc(db=multitude_client.db, collection=collection, owner=owner)
     client.fetch()
     return
 
@@ -61,7 +72,7 @@ def fetch_collection_owner(collection, owner=None):
     "/fetch/<string:collection>", methods=["GET"],
 )
 def fetch_collection(collection):
-    client = MultitudeClient(collection=collection)
+    client = MultitudeDoc(db=multitude_client.db, collection=collection)
     client.fetch()
     return
 
