@@ -6,4 +6,4 @@ dev-server:
 		PYTHONPATH=multitude uvicorn api:app --reload
 
 server:
-	PYTHONPATH=multitude uvicorn api:app
+	@PYTHONPATH=multitude uvicorn api:app
