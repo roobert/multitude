@@ -3,8 +3,6 @@
 from dataclasses import dataclass
 from firebase_admin import firestore
 
-# from .client import MultitudeClient
-
 
 @dataclass
 class MultitudeDoc:
