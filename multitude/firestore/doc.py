@@ -17,7 +17,6 @@ class MultitudeDoc:
 
     @staticmethod
     def to_json(docs):
-        print(docs)
         return [doc.to_dict() for doc in docs]
 
     def fetch_collection_owner_repo_tag(self):
