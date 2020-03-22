@@ -3,7 +3,7 @@ dev-db:
 
 dev-server:
 	@FIRESTORE_EMULATOR_HOST=127.0.0.1:8888 \
-		FLASK_ENV=development FLASK_APP=./multitude/api.py flask run
+		PYTHONPATH=multitude uvicorn api:app --reload
 
 server:
-	@FLASK_APP=./multitude/api.py flask run
+		PYTHONPATH=multitude uvicorn api:app
