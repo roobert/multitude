@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 
-# from firebase_admin import credentials
-# cred = credentials.Certificate("path/to/serviceAccount.json")
-# firebase_admin.initialize_app(cred)
-
+import os
 import sys
 import argparse
 import firebase_admin
 from dataclasses import dataclass, field
 from firebase_admin import firestore
+
+
+class CredentialsError(Exception):
+    pass
 
 
 @dataclass
@@ -23,7 +24,18 @@ class MultitudeClient:
         self.db_configure()
 
     def db_configure(self):
-        firebase_admin.initialize_app()
+        if os.environ["MULTITUDE_SERVICE_ACCOUNT_KEY"]:
+            credentials = firebase_admin.credentials.Certificate(
+                os.environ["MULTITUDE_SERVICE_ACCOUNT_KEY"]
+            )
+            firebase_admin.initialize_app(credentials)
+        elif os.environ["FIRESTORE_EMULATOR_HOST"]:
+            firebase_admin.initialize_app()
+        else:
+            raise CredentialsError(
+                "MULTITUDE_SERVICE_ACCOUNT_KEY or FIRESTORE_EMULATOR_HOST not set!"
+            )
+
         self.db = firestore.client()
 
     def fetch(self):
