@@ -2,6 +2,7 @@
 
 import logging
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from firestore.client import MultitudeClient
 from firestore.doc import MultitudeDoc
 from secret import get_secret
@@ -15,6 +16,21 @@ app.secret_key = secret
 logger.debug(f"token: {secret}")
 
 multitude_client = MultitudeClient()
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://localhost",
+        "https://localhost:8080",
+        "http://localhost",
+        "http://localhost:8080",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.put("/upsert/{collection}/{owner}/{repo}/{tag}")
