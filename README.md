@@ -8,4 +8,6 @@ This software is written in Python/FastAPI, and is backed by GCP Firestore.
 
 ## Interfaces
 ### CLI
-See [Multitude CLI](https://github.com/roobert/multitude-cli) for more info
+See [Multitude CLI](https://github.com/roobert/multitude-cli) for more info.
+### UI
+See [Multitude UI](https://github.com/roobert/multitude-ui) for more info.
