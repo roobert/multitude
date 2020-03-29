@@ -3,7 +3,7 @@ dev-db:
 
 dev-server:
 	@FIRESTORE_EMULATOR_HOST=127.0.0.1:8888 \
-		PYTHONPATH=multitude uvicorn api:app --reload
+		PYTHONPATH=multitude poetry run uvicorn api:app --reload
 
 server:
-	@PYTHONPATH=multitude uvicorn api:app
+	@PYTHONPATH=multitude poetry run uvicorn api:app
