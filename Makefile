@@ -7,3 +7,6 @@ dev-server:
 
 server:
 	@PYTHONPATH=multitude poetry run uvicorn api:app
+
+requirements:
+	@poetry export -f requirements.txt -o requirements.txt
