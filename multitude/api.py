@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+#
+# FIXME: prototype
+#
 
 import os
 import secrets
