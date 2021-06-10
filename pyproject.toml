@@ -7,7 +7,7 @@ authors = ["Rob Wilson <roobert@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 firebase_admin = "^4.0.0"
-fastapi = "^0.53.0"
+fastapi = "^0.65.2"
 uvicorn = "^0.11.3"
 
 [tool.poetry.dev-dependencies]
